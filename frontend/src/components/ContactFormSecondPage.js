@@ -50,7 +50,7 @@ render(){
                             </div>
                             <div className="row">
                                
-                                <div className="col-md-1 pr-0">
+                                <div className="col-2 col-md-1 pr-0">
                                
                                     <Field
                                         label="Date of birth"
@@ -58,7 +58,7 @@ render(){
                                         component={renderField}
                                     />                                       
                                 </div>
-                                <div className="col-md-1 pt-2 pr-0">
+                                <div className="col-2  col-md-1 pt-2 pr-0">
                                 <Field
                                         name="monthOfBirth "
                                      
@@ -66,7 +66,7 @@ render(){
                                     />
                                     
                                 </div>
-                                <div className="col-md-1 pt-2 pr-0">
+                                <div className="col-2 col-md-1 pt-2 pr-0">
                                 <Field
                                         label=" "
                                         name="yearOfBirth"
