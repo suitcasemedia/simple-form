@@ -1,26 +1,25 @@
 import React, {Component} from 'react'
-import {Field} from 'redux-form'
 import { reduxForm} from 'redux-form'
-import {Link ,Redirect   } from 'react-router-dom'
 import {connect} from 'react-redux'
 import '../App.css'
 import validate from '../helpers/validate'
-import renderField from './renderField'
-import renderSelect from './renderSelect'
-import renderTextarea from './renderTextarea'
 import ContactFormFirstPage from './ContactFormFirstPage'
 import ContactFormSecondPage from './ContactFormSecondPage'
 import ContactFormThirdPage from './ContactFormThirdPage'
-
+import ThankYouBanner from './ThankYouBanner'
+import {createEnquiry}from '../actions'
+import {reset} from 'redux-form';
 class ContactFormContainer extends Component {
-
-
     constructor(props) {
         super(props)
         this.nextPage = this.nextPage.bind(this)
         this.previousPage = this.previousPage.bind(this)
+        this.selectPage= this.selectPage.bind(this)
+        this.onSubmit= this.onSubmit.bind(this)
         this.state = {
-          page: 1
+          page: 1,
+          showThankYouBanner: false,
+          values:{},
         }
       }
       componentWillMount(){
@@ -32,8 +31,6 @@ class ContactFormContainer extends Component {
       componentWillUnMount(){
         document.body.style.backgroundColor = null;
       }
-   
-
       nextPage() {
         this.setState({page: this.state.page + 1})
       }
@@ -42,48 +39,58 @@ class ContactFormContainer extends Component {
         this.setState({page: this.state.page - 1})
       }
 
+      selectPage(pageNumber){
+        this.setState({page: Number(pageNumber)})
 
+      }
     onSubmit(values){
-    
-    //this.props.createUser(values, this.props.actionType,()=>  this.props.redirectHome ? window.location.replace("/") : '' )
-        
-    // this.props.History.push('/')
-
+       this.props.createEnquiry(values, ()=> {
+        this.props.dispatch(reset('ContactForm'))
+        this.setState({page:  1})
+        this.setState({values,showThankYouBanner: true,})
+       })
     }
 
     render(){
-  
-          const {handleSubmit,} = this.props;
-          const{page} = this.state;
+          const {handleSubmit,createEnquiry} = this.props;
+          const{page, showThankYouBanner,values} = this.state;
   
           return(
             <div className="contact-form-page">
+              {showThankYouBanner && <ThankYouBanner values={values}/>}
              
-                <div className="contact-form-page--container">
-                    {page === 1 && <ContactFormFirstPage onSubmit={this.nextPage} />}
-                    {page === 2 &&
-                        <ContactFormSecondPage
-                            previousPage={this.previousPage}
-                            onSubmit={this.nextPage}
-                        />}
-                        {page === 3 &&
-                        <ContactFormThirdPage
-                            previousPage={this.previousPage}
-                            onSubmit={this.onSubmit}
-                        />}
-                
-                </div>
+              <div className="contact-form-page--container">
+                <ContactFormFirstPage 
+                  onSubmit={this.nextPage} 
+                  currentPage={page} 
+                  selectPage={this.selectPage}
+                />
+                <ContactFormSecondPage
+                  previousPage={this.previousPage}
+                  onSubmit={this.nextPage}
+                  currentPage={page} 
+                  selectPage={this.selectPage}
+                />
+                <ContactFormThirdPage
+                  previousPage={this.previousPage}
+                  onSubmit={this.onSubmit}
+                  currentPage={page} 
+                  selectPage={this.selectPage}
+                />
+              </div>
             </div>       
           );
       }
   }
- 
-
-
+function mapDispatchToProps(dispatch){
+  return {
+      createEnquiry : (values,callback)=>{ dispatch(createEnquiry(values,callback)) ;}
+  }
+}
 export default reduxForm({
   validate,
   form:'ContactForm'
 })(
- connect(null,null)(ContactFormContainer)
+ connect(null,mapDispatchToProps)(ContactFormContainer)
 );
 

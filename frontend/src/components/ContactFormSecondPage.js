@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Field} from 'redux-form'
 import { reduxForm} from 'redux-form'
-import {Link ,Redirect   } from 'react-router-dom'
 import {connect} from 'react-redux'
 import '../App.css'
 import validate from '../helpers/validate'
@@ -11,25 +10,29 @@ import renderSelect from './renderSelect'
 
 class ContactFormSecondPage extends Component {
 
-  
-render(){
-  
-          const {handleSubmit} = this.props;
-  
-          return(
-                <form onSubmit={handleSubmit}>
-                    <div className="contact-form-page--section">
-                        <div className="contact-form-page--step p-3">
-                            Step 1: Your details
-                        </div>
-                        
-                    </div>
-                    <div className="contact-form-page--section">
-                        <div className="contact-form-page--step p-3 my-1">
-                            Step 2: More comments
-                        </div>
-                        <div className="contact-form-page--inner-section p-3">
+    constructor(props) {
+        super(props)
+      
+        this.state = {
+         open: false
+        }
+      }
 
+    componentDidMount(){
+        setTimeout(()=>this.setState({open : true}) , 20);
+        
+    }
+render(){
+    const {handleSubmit, currentPage, selectPage} = this.props;
+        return(
+            <form onSubmit={handleSubmit}>
+                 
+                <div className="contact-form-page--section">
+                    <div   onClick={()=> this.props.selectPage(2) } className="contact-form-page--step p-3 my-1">
+                        Step 2: More comments
+                    </div>
+                    { currentPage === 2 &&
+                        <div className={`contact-form-page--inner-section p-3 ${this.state.open  ? '' : 'closed'}`}>
                             <div className="row">
                                 <div className="col-md-4">
                                     <Field
@@ -46,12 +49,9 @@ render(){
                                     >  
                                     </Field>
                                 </div>
-                                
                             </div>
                             <div className="row">
-                               
                                 <div className="col-2 col-md-1 pr-0">
-                               
                                     <Field
                                         label="Date of birth"
                                         name="dayOfBirth"
@@ -59,15 +59,14 @@ render(){
                                     />                                       
                                 </div>
                                 <div className="col-2  col-md-1 pt-2 pr-0">
-                                <Field
-                                        name="monthOfBirth "
-                                     
+                                    <Field
+                                        label=" "
+                                        name="monthOfBirth"
                                         component={renderField}
                                     />
-                                    
                                 </div>
                                 <div className="col-2 col-md-1 pt-2 pr-0">
-                                <Field
+                                    <Field
                                         label=" "
                                         name="yearOfBirth"
                                         component={renderField}
@@ -75,36 +74,27 @@ render(){
                                 </div>
                             </div>
                             <div className="row">
-                            <div className="col-md-10 ">
-                                
-                            </div>
+                                <div className="col-md-9">
+                                    
+                                </div>
 
-                            <div className="col-md-2 ">
-                                <button type="submit" className="btn-primary p-1"  > Next > </button>
+                                <div className="col-md-3 ">
+                                    <button type="submit" className="btn-primary py-1 px-5"  > Next > </button>
                                 </div> 
                             </div>
                         </div> 
-                        <div className="contact-form-page--step p-3 my-1">
-                            Step 3: Final comments
-                        </div>
-                    </div>
-                   
-                  
-                  
-                 
-                </form> 
-                 
+                    }
+                </div> 
+                
+            </form>      
           );
       }
   }
   
-
-
-
 export default reduxForm({
-  validate,
-  form:'ContactForm'
+    validate,
+    form:'ContactForm'
 })(
- connect(null,null)(ContactFormSecondPage)
+    connect(null,null)(ContactFormSecondPage)
 );
 

@@ -16,19 +16,26 @@ function validate(values) {
         errors.emailAddress = "Please enter a valid email address"
 
     }
-   if(!values.telephoneNumber){
-        errors.telephoneNumber= "Please enter a numeric telephone number"
-
+    if(!values.telephoneNumber || (isNaN(parseFloat(values.telephoneNumber)) && !isFinite(values.telephoneNumber) ) || values.telephoneNumber.length < 6){
+        errors.telephoneNumber= "Please enter a numeric telephone number at least 6 characters long"
     }
-    if(!values.dateOfBirth){
-        errors.dateOfBirth = "Enter some content please"
-
+    if(!values.gender || values.gender === "Select Gender"){
+        errors.gender= "Please select your gender"
     }
+    if(!values.dayOfBirth || (isNaN(parseFloat(values.dayOfBirth )) && !isFinite(values.dayOfBirth ) )){
+        errors.dayOfBirth= "Please enter a numeric value for the day of your birth"
+    }
+    if(!values.monthOfBirth  || (isNaN(parseFloat(values.monthOfBirth)) && !isFinite(values.monthOfBirth) ) ||( values.monthOfBirth >12 || values.monthOfBirth < 1)){
+        errors.monthOfBirth = "Please enter a numeric value for the month of your birth between 1 and 12"
+    }
+    
+    if(!values.yearOfBirth  || (isNaN(parseFloat(values.yearOfBirth)) && !isFinite(values.yearOfBirth)) ){
+        errors.yearOfBirth = "Please enter a numeric value for the year of your birth "
+    }
+   
    if(!values.comments){
-        errors.author = "Enter some content please"
-
-}
-
+        errors.comments = "Enter some content please"
+    }
 return errors;
   
 }

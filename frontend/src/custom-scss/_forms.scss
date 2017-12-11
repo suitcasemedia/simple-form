@@ -10,3 +10,18 @@
 label{
     white-space: nowrap;
 }
+
+.closed {
+    height: 0px;
+   
+    div * { display: none;}
+}
+
+input.form-control , select, textarea{
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow:   inset 2px 2px 15px 0px rgba(100,100,100,0.6);
+    -webkit-box-shadow:   inset 2px 2px 15px 0px rgba(100,100,100,0.6);
+    box-shadow:          inset 2px 2px 15px 0px rgba(100,100,100,0.6);
+}

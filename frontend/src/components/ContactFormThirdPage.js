@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
 import validate from '../helpers/validate'
-import renderField from './renderField'
-import renderSelect from './renderSelect'
 import {Field} from 'redux-form'
 import { reduxForm} from 'redux-form'
 import renderTextarea from './renderTextarea'
@@ -18,52 +16,46 @@ class ContactFormThirdPage extends Component {
       componentWillUnMount(){
         document.body.style.backgroundColor = null;
       }
-
+      onSubmit(values){
+        this.props.handleSubmit(values)  
+      
+    }
     render(){
     
-            const {handleSubmit} = this.props;
+            const {handleSubmit, onSubmit,currentPage} = this.props;
     
             return(
-                <form onSubmit={handleSubmit}>
+                 <form onSubmit={handleSubmit}>
+                   
                     <div className="contact-form-page--section">
-                        <div className="contact-form-page--step p-3">
-                            Step 1: Your details
-                        </div>
-                        
-                    </div>
-                    <div className="contact-form-page--section">
-                        <div className="contact-form-page--step p-3 my-1">
-                            Step 2: more comments
-                        </div>
-                        
-                    </div>
-                    <div className="contact-form-page--section">
-                        <div className="contact-form-page--step p-3 my-1">
+                        <div   onClick={()=> this.props.selectPage(3)}  className="contact-form-page--step p-3 my-1">
                             Step 3: Final comments
                         </div>
-                        <div className="contact-form-page--inner-section p-3">
+                        { currentPage === 3 &&
+                            <div className="contact-form-page--inner-section p-3">
 
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <Field
-                                        label="Comments"
-                                        name="comments"
-                                        component={renderTextarea}
-                                    />
-                                </div>
-                               
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <Field
+                                            label="Comments"
+                                            name="comments"
+                                            component={renderTextarea}
+                                        />
+                                    </div>
                                 
-                            </div>
-                            <div className="row">
-                                <div className="col-md-10 ">
                                     
                                 </div>
+                                <div className="row">
+                                    <div className="col-md-9">
+                                        
+                                    </div>
 
-                                <div className="col-md-2 ">
-                                    <button type="submit" className="btn-primary p-1"  > Next > </button>
-                                    </div> 
-                                </div>
-                        </div> 
+                                    <div className="col-md-3">
+                                        <button type="submit" className="btn-primary py-1 px-5" > Next > </button>
+                                        </div> 
+                                    </div>
+                            </div> 
+                        }
                     </div>
                 </form> 
             )
